@@ -34,18 +34,10 @@ def apply_transform(transform, vertex):
     new_z = g*x + h*y + i*z + z0
     return (new_x, new_y, new_z)
 
-def parse_ldraw_file(file_path, ldraw_path, cache=None, current_transform=None):
+def parse_ldraw_file(file_path, ldraw_path, current_transform=None):
     """Parse an LDraw file and return a list of triangles with transformations applied"""
-    if cache is None:
-        cache = set()
     if current_transform is None:
         current_transform = (1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)  # Identity matrix
-    
-    # Normalize path and check cache
-    abs_path = os.path.abspath(file_path)
-    if abs_path in cache:
-        return []
-    cache.add(abs_path)
     
     triangles = []
     
@@ -137,9 +129,7 @@ def parse_ldraw_file(file_path, ldraw_path, cache=None, current_transform=None):
                         
                         if os.path.exists(subfile_path):
                             # Recursively parse subfile
-                            sub_triangles = parse_ldraw_file(
-                                subfile_path, ldraw_path, cache, composed_transform
-                            )
+                            sub_triangles = parse_ldraw_file(subfile_path, ldraw_path, composed_transform)
                             triangles.extend(sub_triangles)
                         else:
                             print(f"Warning: Subfile {subfile} not found in {ldraw_path}")
