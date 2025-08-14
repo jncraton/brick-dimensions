@@ -249,7 +249,10 @@ def main():
             part = part.strip()
             dims_cm = get_dimensions(part)
 
-            print(f"{part},{dims_cm[0]:.02f},{dims_cm[1]:.02f},{dims_cm[2]:.02f}")
+            if sum(dims_cm) <= 0:
+                print(f"Excluding part {part} with zero volume", file=sys.stderr)
+            else:
+                print(f"{part},{dims_cm[0]:.02f},{dims_cm[1]:.02f},{dims_cm[2]:.02f}")
 
 
 if __name__ == "__main__":
