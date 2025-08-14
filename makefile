@@ -5,14 +5,14 @@ ldraw:
 	unzip complete.zip
 
 brick-dimensions.csv: ldraw_parts.txt
-	python3 brick-dimensions.py $< > $@
+	python3 brickdims.py $< > $@
 
 parts.csv:
 	wget https://cdn.rebrickable.com/media/downloads/parts.csv.gz
 	gzip --decompress parts.csv.gz
 
 test: ldraw
-	python3 -m doctest brick-dimensions.py
+	python3 -m doctest brickdims.py
 
 ldraw_parts.txt: parts.csv ldraw
 	python3 gen_ldraw_parts.py > $@
