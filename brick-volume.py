@@ -156,17 +156,6 @@ def compute_bounding_box(triangles):
     min_z, max_z = min(zs), max(zs)
     return (min_x, min_y, min_z, max_x, max_y, max_z)
 
-def compute_volume(triangles):
-    """Compute the volume of a closed mesh represented by triangles"""
-    volume = 0.0
-    for tri in triangles:
-        (x1, y1, z1), (x2, y2, z2), (x3, y3, z3) = tri
-        v = x1 * (y2 * z3 - z2 * y3) + \
-            y1 * (z2 * x3 - x2 * z3) + \
-            z1 * (x2 * y3 - y2 * x3)
-        volume += v
-    return abs(volume) / 6.0
-
 def main():
     parser = argparse.ArgumentParser(
         description='Compute volume, weight, and bounding box of a LEGO brick from an LDraw file.'
@@ -190,17 +179,8 @@ def main():
         sys.exit(1)
 
     bounding_box_ldu = compute_bounding_box(triangles)
-    volume_ldu3 = compute_volume(triangles)
-
-    ldu_to_cm = 0.04
-    volume_cm3 = volume_ldu3 * (ldu_to_cm ** 3)
-    density_abs = 1.05  # g/cm³
-    weight_g = volume_cm3 * density_abs
-
     bounding_box_cm = tuple(coord * ldu_to_cm for coord in bounding_box_ldu)
 
-    print(f"Volume: {volume_cm3:.6f} cm³")
-    print(f"Weight: {weight_g:.6f} g")
     print(f"Bounding box (in LDU): {bounding_box_ldu}")
     print(f"Bounding box (in cm): {bounding_box_cm}")
 
