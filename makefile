@@ -11,7 +11,7 @@ parts.csv:
 	wget https://cdn.rebrickable.com/media/downloads/parts.csv.gz
 	gzip --decompress parts.csv.gz
 
-test:
+test: ldraw
 	python3 -m doctest brick-dimensions.py
 
 ldraw_parts.txt: parts.csv ldraw
