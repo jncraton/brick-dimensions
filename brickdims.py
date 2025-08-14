@@ -58,7 +58,7 @@ def parse_ldraw_file(file_path, current_transform=None):
 
                 if cmd_type == "3":
                     # Triangle command: 3 <color> <x1> <y1> <z1> <x2> <y2> <z2> <x3> <y3> <z3>
-                    if len(parts) < 12:
+                    if len(parts) < 11:
                         continue
                     try:
                         x1, y1, z1 = float(parts[2]), float(parts[3]), float(parts[4])
