@@ -16,6 +16,10 @@ Here's an example of the generated output:
 
 The complete [brick-dimensions.csv file](https://jncraton.github.io/brick-dimensions/brick-dimensions.csv) is available for direct download.
 
+## Validation
+
+Several parts have been spot-checked against Bricklink part dimensions, and a number of parts are automatically validated by unit tests.
+
 ## Building Locally
 
 This project has only been tested on Debian-based Linux. In order to run this program, you will need the LDraw parts library. It is expected that this lives in `/usr/share/ldraw` and can be installed as `ldraw-parts`, though this will not include the most recent part updates.
