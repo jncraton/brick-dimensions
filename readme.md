@@ -14,7 +14,7 @@ Here's an example of the generated output:
 | 3010     | 0.8   | 3.2    | 1.12   |
 | 3029     | 3.2   | 9.6    | 0.48   |
 
-The complete [brick-dimensions.csv file is available for direct download](https://jncraton.github.io/brick-dimensions/brick-dimensions.csv).
+The complete [brick-dimensions.csv file](https://jncraton.github.io/brick-dimensions/brick-dimensions.csv) is available for direct download.
 
 ## Building Locally
 
