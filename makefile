@@ -19,6 +19,7 @@ ldraw_parts.txt: parts.csv ldraw
 
 clean:
 	rm -rf __pycache__
+	rm -rf ldraw complete.zip
 	rm -f parts.csv parts.csv.gz
 	rm -f ldraw_parts.txt
 	rm -f brick-dimensions.csv
