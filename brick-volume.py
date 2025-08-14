@@ -164,7 +164,7 @@ def compute_bounding_box(triangles):
     min_z, max_z = min(zs), max(zs)
     return (min_x, min_y, min_z, max_x, max_y, max_z)
 
-def get_bounding_box(part, ldraw_path):
+def get_bounding_box(part, ldraw_path='/usr/share/ldraw'):
     file_path = f"{ldraw_path}/parts/{part}.dat"
 
     try:
@@ -193,7 +193,7 @@ def main():
 
     with open(args.file) as f:
         for part in f.readlines():
-            bounding_box_ldu = get_bounding_box(part.strip(), args.ldraw_path)
+            bounding_box_ldu = get_bounding_box(part.strip())
             ldu_to_cm = 0.04
             bounding_box_cm = tuple(coord * ldu_to_cm for coord in bounding_box_ldu)
             print(bounding_box_cm)
