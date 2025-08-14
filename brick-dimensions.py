@@ -238,7 +238,7 @@ def get_dimensions(part):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Compute volume, weight, and bounding box of a LEGO brick from an LDraw file."
+        description="Compute dimensions of a LEGO brick from an LDraw file."
     )
     parser.add_argument("file", help="Path to the LDraw parts")
     args = parser.parse_args()
