@@ -140,11 +140,11 @@ def parse_ldraw_file(file_path, ldraw_path, current_transform=None):
                             sub_triangles = parse_ldraw_file(subfile_path, ldraw_path, composed_transform)
                             triangles.extend(sub_triangles)
                         else:
-                            print(f"Warning: Subfile {subfile} not found in {ldraw_path}")
+                            print(f"Warning: Subfile {subfile} not found in {ldraw_path}", file=sys.stderr)
                     except (IndexError, ValueError):
                         continue
     except Exception as e:
-        print(f"Error reading file {file_path}: {e}")
+        print(f"Error reading file {file_path}: {e}", file=sys.stderr)
         return []
     
     return triangles
@@ -170,11 +170,11 @@ def get_bounding_box(part, ldraw_path='/usr/share/ldraw'):
     try:
         triangles = parse_ldraw_file(file_path, ldraw_path)
     except Exception as e:
-        print(f"Error reading file: {e}")
+        print(f"Error reading file: {e}", file=sys.stderr)
         sys.exit(1)
 
     if not triangles:
-        print(f"No triangles found in the LDraw file: {file_path}")
+        print(f"No triangles found in the LDraw file: {file_path}", file=sys.stderr)
         sys.exit(1)
 
     return compute_bounding_box(triangles)
