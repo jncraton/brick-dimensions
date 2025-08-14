@@ -4,7 +4,7 @@ Calculate the dimensions of LEGO bricks from LDraw models
 
 ## Generated Output
 
-This project generates a csv file with dimension for all Rebrickable parts that have a valid LDraw part with the same part number.
+This project generates a csv file with dimensions for all Rebrickable parts that have a valid LDraw part with the same part number.
 
 Here's an example of the generated output:
 
