@@ -203,6 +203,29 @@ def get_bounding_box(part, ldraw_path="/usr/share/ldraw"):
 
     return compute_bounding_box(triangles)
 
+def get_dimensions(part, ldraw_path="/usr/share/ldraw"):
+    """Get part dimensions in centimeters
+
+    Dimension order is widgt, length, height
+
+    This matches part names e.g. 1x5x1 Brick
+
+    >>> get_dimensions("3001")
+    (1.6, 3.2, 1.12)
+
+    >>> get_dimensions("3005")
+    (0.8, 0.8, 1.12)
+    """
+    
+    bounding_box_ldu = get_bounding_box(part)
+    dims_ldu = (
+        abs(bounding_box_ldu[2] - bounding_box_ldu[5]),
+        abs(bounding_box_ldu[0] - bounding_box_ldu[3]),
+        abs(bounding_box_ldu[1] - bounding_box_ldu[4]),
+    )
+    ldu_to_cm = 0.04
+    return tuple(coord * ldu_to_cm for coord in dims_ldu)
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -220,16 +243,9 @@ def main():
         print("part_num,width,length,height")
         for part in f.readlines():
             part = part.strip()
-            bounding_box_ldu = get_bounding_box(part)
-            dims_ldu = (
-                abs(bounding_box_ldu[0] - bounding_box_ldu[3]),
-                abs(bounding_box_ldu[1] - bounding_box_ldu[4]),
-                abs(bounding_box_ldu[2] - bounding_box_ldu[5]),
-            )
-            ldu_to_cm = 0.04
-            dims_cm = tuple(coord * ldu_to_cm for coord in dims_ldu)
+            dims_cm = get_dimensions(part)
 
-            print(f"{part},{dims_cm[2]},{dims_cm[0]},{dims_cm[1]}")
+            print(f"{part},{dims_cm[0]},{dims_cm[1]},{dims_cm[2]}")
 
 
 if __name__ == "__main__":
