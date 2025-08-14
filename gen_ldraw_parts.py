@@ -1,14 +1,13 @@
-""" Generate a list of all Rebrickable parts with ldraw models """
+"""Generate a list of all Rebrickable parts with ldraw models"""
 
 import csv
 import os
 
-ldraw_path = '/usr/share/ldraw'
+ldraw_path = "/usr/share/ldraw"
 
 count = 0
-with open('parts.csv') as parts:
+with open("parts.csv") as parts:
     for row in csv.DictReader(parts):
         exists = os.path.exists(f"{ldraw_path}/parts/{row['part_num']}.dat")
         if exists:
-            print(row['part_num'])
-        
+            print(row["part_num"])
