@@ -182,7 +182,7 @@ def compute_bounding_box(triangles):
     return (min_x, min_y, min_z, max_x, max_y, max_z)
 
 
-def get_bounding_box(part, ldraw_path="/usr/share/ldraw"):
+def get_bounding_box(part, ldraw_path="ldraw"):
     """Get bounding box for a part
 
     >>> get_bounding_box("3001")
@@ -204,7 +204,7 @@ def get_bounding_box(part, ldraw_path="/usr/share/ldraw"):
     return compute_bounding_box(triangles)
 
 
-def get_dimensions(part, ldraw_path="/usr/share/ldraw"):
+def get_dimensions(part, ldraw_path="ldraw"):
     """Get part dimensions in centimeters
 
     Dimension order is widgt, length, height
@@ -244,8 +244,8 @@ def main():
     parser.add_argument("file", help="Path to the LDraw parts")
     parser.add_argument(
         "--ldraw_path",
-        default="/usr/share/ldraw",
-        help="Path to the LDraw library directory (default: /usr/share/ldraw)",
+        default="ldraw",
+        help="Path to the LDraw library directory (default: ldraw)",
     )
     args = parser.parse_args()
 
