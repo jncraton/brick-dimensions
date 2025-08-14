@@ -203,6 +203,7 @@ def get_bounding_box(part, ldraw_path="/usr/share/ldraw"):
 
     return compute_bounding_box(triangles)
 
+
 def get_dimensions(part, ldraw_path="/usr/share/ldraw"):
     """Get part dimensions in centimeters
 
@@ -216,7 +217,7 @@ def get_dimensions(part, ldraw_path="/usr/share/ldraw"):
     >>> get_dimensions("3005")
     (0.8, 0.8, 1.12)
     """
-    
+
     bounding_box_ldu = get_bounding_box(part)
     dims_ldu = (
         abs(bounding_box_ldu[2] - bounding_box_ldu[5]),
