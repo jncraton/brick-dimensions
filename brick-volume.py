@@ -169,12 +169,7 @@ def get_bounding_box(part, ldraw_path):
         print("No triangles found in the LDraw file.")
         sys.exit(1)
 
-    bounding_box_ldu = compute_bounding_box(triangles)
-    ldu_to_cm = 0.04
-    bounding_box_cm = tuple(coord * ldu_to_cm for coord in bounding_box_ldu)
-
-    print(f"Bounding box (in LDU): {bounding_box_ldu}")
-    print(f"Bounding box (in cm): {bounding_box_cm}")
+    return compute_bounding_box(triangles)
 
 def main():
     parser = argparse.ArgumentParser(
@@ -190,7 +185,10 @@ def main():
 
     with open(args.file) as f:
         for part in f.readlines():
-            get_bounding_box(part.strip(), args.ldraw_path)
+            bounding_box_ldu = get_bounding_box(part.strip(), args.ldraw_path)
+            ldu_to_cm = 0.04
+            bounding_box_cm = tuple(coord * ldu_to_cm for coord in bounding_box_ldu)
+            print(bounding_box_cm)
 
 if __name__ == '__main__':
     main()
