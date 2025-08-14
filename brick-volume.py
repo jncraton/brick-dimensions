@@ -192,11 +192,19 @@ def main():
     args = parser.parse_args()
 
     with open(args.file) as f:
+        print("part_num,width,length,height")
         for part in f.readlines():
-            bounding_box_ldu = get_bounding_box(part.strip())
+            part = part.strip()
+            bounding_box_ldu = get_bounding_box(part)
+            dims_ldu = (
+                abs(bounding_box_ldu[0] - bounding_box_ldu[3]),
+                abs(bounding_box_ldu[1] - bounding_box_ldu[4]),
+                abs(bounding_box_ldu[2] - bounding_box_ldu[5]),
+            )
             ldu_to_cm = 0.04
-            bounding_box_cm = tuple(coord * ldu_to_cm for coord in bounding_box_ldu)
-            print(bounding_box_cm)
+            dims_cm = tuple(coord * ldu_to_cm for coord in dims_ldu)
 
+            print(f"{part},{dims_cm[2]},{dims_cm[0]},{dims_cm[1]}")
+ 
 if __name__ == '__main__':
     main()
