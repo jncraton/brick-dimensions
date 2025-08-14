@@ -15,3 +15,7 @@ Here's an example of the generated output:
 | 3029     | 3.2   | 9.6    | 0.48   |
 
 Complete output can be found [here](https://jncraton.github.io/brick-dimensions/brick-dimensions.csv).
+
+## Building Locally
+
+This project has only been tested on Debian-based Linux. In order to run this program, you will need the LDraw parts library. It is expected that this lives in `/usr/share/ldraw` and can be installed as `ldraw-parts`, though this will not include the most recent part updates.
