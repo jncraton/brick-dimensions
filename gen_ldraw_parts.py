@@ -1,3 +1,5 @@
+""" Generate a list of all Rebrickable parts with ldraw models """
+
 import csv
 import os
 
