@@ -1,4 +1,4 @@
-# brick-dimensions
+# Brick Dimensions
 
 Calculate the dimensions of LEGO bricks from LDraw models
 
