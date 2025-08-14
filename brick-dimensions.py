@@ -2,6 +2,7 @@ import argparse
 import sys
 import os
 
+ldraw_path = "ldraw"
 
 def compose_transforms(t1, t2):
     """Compose two transformation matrices (t1 followed by t2)"""
@@ -37,7 +38,7 @@ def apply_transform(transform, vertex):
     return (new_x, new_y, new_z)
 
 
-def parse_ldraw_file(file_path, ldraw_path, current_transform=None):
+def parse_ldraw_file(file_path, current_transform=None):
     """Parse an LDraw file and return a list of triangles with transformations applied"""
     if current_transform is None:
         current_transform = (1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)  # Identity matrix
@@ -148,9 +149,7 @@ def parse_ldraw_file(file_path, ldraw_path, current_transform=None):
 
                         if os.path.exists(subfile_path):
                             # Recursively parse subfile
-                            sub_triangles = parse_ldraw_file(
-                                subfile_path, ldraw_path, composed_transform
-                            )
+                            sub_triangles = parse_ldraw_file(subfile_path, composed_transform)
                             triangles.extend(sub_triangles)
                         else:
                             print(
@@ -182,7 +181,7 @@ def compute_bounding_box(triangles):
     return (min_x, min_y, min_z, max_x, max_y, max_z)
 
 
-def get_bounding_box(part, ldraw_path="ldraw"):
+def get_bounding_box(part):
     """Get bounding box for a part
 
     >>> get_bounding_box("3001")
@@ -194,7 +193,7 @@ def get_bounding_box(part, ldraw_path="ldraw"):
     file_path = f"{ldraw_path}/parts/{part}.dat"
 
     try:
-        triangles = parse_ldraw_file(file_path, ldraw_path)
+        triangles = parse_ldraw_file(file_path)
     except Exception as e:
         print(f"Error reading file: {e}", file=sys.stderr)
 
@@ -204,7 +203,7 @@ def get_bounding_box(part, ldraw_path="ldraw"):
     return compute_bounding_box(triangles)
 
 
-def get_dimensions(part, ldraw_path="ldraw"):
+def get_dimensions(part):
     """Get part dimensions in centimeters
 
     Dimension order is widgt, length, height
@@ -242,11 +241,6 @@ def main():
         description="Compute volume, weight, and bounding box of a LEGO brick from an LDraw file."
     )
     parser.add_argument("file", help="Path to the LDraw parts")
-    parser.add_argument(
-        "--ldraw_path",
-        default="ldraw",
-        help="Path to the LDraw library directory (default: ldraw)",
-    )
     args = parser.parse_args()
 
     with open(args.file) as f:
