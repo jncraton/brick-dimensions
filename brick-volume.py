@@ -174,7 +174,7 @@ def get_bounding_box(part, ldraw_path):
         sys.exit(1)
 
     if not triangles:
-        print("No triangles found in the LDraw file.")
+        print("No triangles found in the LDraw file: {file_path}")
         sys.exit(1)
 
     return compute_bounding_box(triangles)
