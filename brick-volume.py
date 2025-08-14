@@ -171,11 +171,11 @@ def main():
     parser = argparse.ArgumentParser(
         description='Compute volume, weight, and bounding box of a LEGO brick from an LDraw file.'
     )
-    parser.add_argument('file', help='Path to the LDraw file')
+    parser.add_argument('file', help='Path to the LDraw parts')
     parser.add_argument(
         '--ldraw_path', 
-        default='.',
-        help='Path to the LDraw library directory (default: current directory)'
+        default='/usr/share/ldraw',
+        help='Path to the LDraw library directory (default: /usr/share/ldraw)'
     )
     args = parser.parse_args()
 
