@@ -219,6 +219,9 @@ def get_dimensions(part, ldraw_path="/usr/share/ldraw"):
 
     >>> get_dimensions("2555")
     (0.8, 0.8, 0.72)
+
+    >>> get_dimensions("6019")
+    (1.36, 0.8, 0.64)
     """
 
     bounding_box_ldu = get_bounding_box(part)
