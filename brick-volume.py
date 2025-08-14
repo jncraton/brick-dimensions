@@ -156,6 +156,26 @@ def compute_bounding_box(triangles):
     min_z, max_z = min(zs), max(zs)
     return (min_x, min_y, min_z, max_x, max_y, max_z)
 
+def get_bounding_box(part, ldraw_path):
+    file_path = f"{ldraw_path}/parts/{part}.dat"
+
+    try:
+        triangles = parse_ldraw_file(file_path, ldraw_path)
+    except Exception as e:
+        print(f"Error reading file: {e}")
+        sys.exit(1)
+
+    if not triangles:
+        print("No triangles found in the LDraw file.")
+        sys.exit(1)
+
+    bounding_box_ldu = compute_bounding_box(triangles)
+    ldu_to_cm = 0.04
+    bounding_box_cm = tuple(coord * ldu_to_cm for coord in bounding_box_ldu)
+
+    print(f"Bounding box (in LDU): {bounding_box_ldu}")
+    print(f"Bounding box (in cm): {bounding_box_cm}")
+
 def main():
     parser = argparse.ArgumentParser(
         description='Compute volume, weight, and bounding box of a LEGO brick from an LDraw file.'
@@ -168,21 +188,7 @@ def main():
     )
     args = parser.parse_args()
 
-    try:
-        triangles = parse_ldraw_file(args.file, args.ldraw_path)
-    except Exception as e:
-        print(f"Error reading file: {e}")
-        sys.exit(1)
-
-    if not triangles:
-        print("No triangles found in the LDraw file.")
-        sys.exit(1)
-
-    bounding_box_ldu = compute_bounding_box(triangles)
-    bounding_box_cm = tuple(coord * ldu_to_cm for coord in bounding_box_ldu)
-
-    print(f"Bounding box (in LDU): {bounding_box_ldu}")
-    print(f"Bounding box (in cm): {bounding_box_cm}")
+    get_bounding_box('3005', args.ldraw_path)
 
 if __name__ == '__main__':
     main()
