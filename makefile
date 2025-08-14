@@ -1,4 +1,4 @@
-all: test
+all: brick-dimensions.csv
 
 brick-dimensions.csv: ldraw_parts.txt
 	python3 brick-volume.py $< > $@
