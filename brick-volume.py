@@ -124,6 +124,14 @@ def parse_ldraw_file(file_path, ldraw_path, current_transform=None):
                                 if not subfile.lower().endswith('.dat'):
                                     subfile_path = os.path.join(search_path, subfile + '.dat')
 
+                            if not os.path.exists(subfile_path):
+                                # Try with uppercase .DAT extension
+                                    subfile_path = subfile_path.replace('.DAT', '.dat')
+
+                            if not os.path.exists(subfile_path):
+                                # Try with all lowercase
+                                    subfile_path = subfile_path.lower()
+
                             if os.path.exists(subfile_path):
                                 break
                         
