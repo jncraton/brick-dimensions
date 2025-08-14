@@ -14,4 +14,4 @@ Here's an example of the generated output:
 | 3010     | 0.8   | 3.2    | 1.12   |
 | 3029     | 3.2   | 9.6    | 0.48   |
 
-complete output can be found [here](https://jncraton.github.io/brick-dimensions/brick-dimensions.csv).
+Complete output can be found [here](https://jncraton.github.io/brick-dimensions/brick-dimensions.csv).
