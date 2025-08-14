@@ -3,7 +3,7 @@
 import csv
 import os
 
-ldraw_path = "/usr/share/ldraw"
+ldraw_path = "ldraw"
 
 count = 0
 with open("parts.csv") as parts:
