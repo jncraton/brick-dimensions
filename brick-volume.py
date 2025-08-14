@@ -183,6 +183,14 @@ def compute_bounding_box(triangles):
 
 
 def get_bounding_box(part, ldraw_path="/usr/share/ldraw"):
+    """Get bounding box for a part
+
+    >>> get_bounding_box("3001")
+    (-40.0, -4.0, -20.0, 40.0, 24.0, 20.0)
+
+    >>> get_bounding_box("3005")
+    (-10.0, -4.0, -10.0, 10.0, 24.0, 10.0)
+    """
     file_path = f"{ldraw_path}/parts/{part}.dat"
 
     try:
