@@ -1,5 +1,7 @@
 # Brick Dimensions
 
+[![Deploy to Pages](https://github.com/jncraton/brick-dimensions/actions/workflows/pages.yml/badge.svg)](https://github.com/jncraton/brick-dimensions/actions/workflows/pages.yml)
+
 Calculate the dimensions of LEGO bricks from LDraw models
 
 [<img width="512" height="256" alt="image" src="https://github.com/user-attachments/assets/6426f353-5a53-484a-84c7-4a1b39e68bd3" />](https://commons.wikimedia.org/wiki/File:Lego_dimensions.svg)
