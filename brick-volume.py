@@ -188,7 +188,9 @@ def main():
     )
     args = parser.parse_args()
 
-    get_bounding_box('3005', args.ldraw_path)
+    with open(args.file) as f:
+        for part in f.readlines():
+            get_bounding_box(part.strip(), args.ldraw_path)
 
 if __name__ == '__main__':
     main()
