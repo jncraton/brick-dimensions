@@ -189,11 +189,9 @@ def get_bounding_box(part, ldraw_path="/usr/share/ldraw"):
         triangles = parse_ldraw_file(file_path, ldraw_path)
     except Exception as e:
         print(f"Error reading file: {e}", file=sys.stderr)
-        sys.exit(1)
 
     if not triangles:
         print(f"No triangles found in the LDraw file: {file_path}", file=sys.stderr)
-        sys.exit(1)
 
     return compute_bounding_box(triangles)
 
