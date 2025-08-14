@@ -14,5 +14,6 @@ ldraw_parts.txt: parts.csv
 	python3 gen_ldraw_parts.py > $@
 
 clean:
+	rm -rf __pycache__
 	rm -f parts.csv parts.csv.gz
 	rm -f ldraw_parts.txt
