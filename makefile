@@ -17,3 +17,5 @@ clean:
 	rm -rf __pycache__
 	rm -f parts.csv parts.csv.gz
 	rm -f ldraw_parts.txt
+	rm -f brick-dimensions.csv
+	rm -f part_categories.csv
