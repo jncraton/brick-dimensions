@@ -113,20 +113,7 @@ def parse_ldraw_file(file_path, current_transform=None):
 
                         subfile_path = os.path.join(search_path, subfile)
                         subfile_path = subfile_path.replace("\\", "/")
-                        if not os.path.exists(subfile_path):
-                            # Try with .dat extension if not present
-                            if not subfile.lower().endswith(".dat"):
-                                subfile_path = os.path.join(
-                                    search_path, subfile + ".dat"
-                                )
-
-                        if not os.path.exists(subfile_path):
-                            # Try with uppercase .DAT extension
-                            subfile_path = subfile_path.replace(".DAT", ".dat")
-
-                        if not os.path.exists(subfile_path):
-                            # Try with all lowercase
-                            subfile_path = subfile_path.lower()
+                        subfile_path = subfile_path.lower()
 
                         if os.path.exists(subfile_path):
                             break
