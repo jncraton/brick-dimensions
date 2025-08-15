@@ -58,106 +58,90 @@ def parse_ldraw_file(file_path, current_transform=None):
 
                 if cmd_type == "3":
                     # Triangle command: 3 <color> <x1> <y1> <z1> <x2> <y2> <z2> <x3> <y3> <z3>
-                    if len(parts) < 11:
-                        continue
-                    try:
-                        x1, y1, z1 = float(parts[2]), float(parts[3]), float(parts[4])
-                        x2, y2, z2 = float(parts[5]), float(parts[6]), float(parts[7])
-                        x3, y3, z3 = float(parts[8]), float(parts[9]), float(parts[10])
+                    x1, y1, z1 = float(parts[2]), float(parts[3]), float(parts[4])
+                    x2, y2, z2 = float(parts[5]), float(parts[6]), float(parts[7])
+                    x3, y3, z3 = float(parts[8]), float(parts[9]), float(parts[10])
 
-                        # Apply current transformation
-                        v1 = apply_transform(current_transform, (x1, y1, z1))
-                        v2 = apply_transform(current_transform, (x2, y2, z2))
-                        v3 = apply_transform(current_transform, (x3, y3, z3))
+                    # Apply current transformation
+                    v1 = apply_transform(current_transform, (x1, y1, z1))
+                    v2 = apply_transform(current_transform, (x2, y2, z2))
+                    v3 = apply_transform(current_transform, (x3, y3, z3))
 
-                        triangles.append((v1, v2, v3))
-                    except (IndexError, ValueError):
-                        continue
+                    triangles.append((v1, v2, v3))
 
                 elif cmd_type == "4":
                     # Quad command: 4 <color> <x1> <y1> <z1> <x2> <y2> <z2> <x3> <y3> <z3> <x4> <y4> <z4>
-                    if len(parts) < 14:
-                        continue
-                    try:
-                        x1, y1, z1 = float(parts[2]), float(parts[3]), float(parts[4])
-                        x2, y2, z2 = float(parts[5]), float(parts[6]), float(parts[7])
-                        x3, y3, z3 = float(parts[8]), float(parts[9]), float(parts[10])
-                        x4, y4, z4 = (
-                            float(parts[11]),
-                            float(parts[12]),
-                            float(parts[13]),
-                        )
+                    x1, y1, z1 = float(parts[2]), float(parts[3]), float(parts[4])
+                    x2, y2, z2 = float(parts[5]), float(parts[6]), float(parts[7])
+                    x3, y3, z3 = float(parts[8]), float(parts[9]), float(parts[10])
+                    x4, y4, z4 = (
+                        float(parts[11]),
+                        float(parts[12]),
+                        float(parts[13]),
+                    )
 
-                        # Apply current transformation
-                        v1 = apply_transform(current_transform, (x1, y1, z1))
-                        v2 = apply_transform(current_transform, (x2, y2, z2))
-                        v3 = apply_transform(current_transform, (x3, y3, z3))
-                        v4 = apply_transform(current_transform, (x4, y4, z4))
+                    # Apply current transformation
+                    v1 = apply_transform(current_transform, (x1, y1, z1))
+                    v2 = apply_transform(current_transform, (x2, y2, z2))
+                    v3 = apply_transform(current_transform, (x3, y3, z3))
+                    v4 = apply_transform(current_transform, (x4, y4, z4))
 
-                        # Split quad into two triangles
-                        triangles.append((v1, v2, v3))
-                        triangles.append((v1, v3, v4))
-                    except (IndexError, ValueError):
-                        continue
+                    # Split quad into two triangles
+                    triangles.append((v1, v2, v3))
 
                 elif cmd_type == "1":
                     # Subfile command: 1 <color> <x> <y> <z> <a> <b> <c> <d> <e> <f> <g> <h> <i> <file>
-                    if len(parts) < 15:
-                        continue
-                    try:
-                        # Extract transformation matrix
-                        x, y, z = float(parts[2]), float(parts[3]), float(parts[4])
-                        a, b, c = float(parts[5]), float(parts[6]), float(parts[7])
-                        d, e, f = float(parts[8]), float(parts[9]), float(parts[10])
-                        g, h, i = float(parts[11]), float(parts[12]), float(parts[13])
-                        subfile = parts[14]
+                    # Extract transformation matrix
+                    x, y, z = float(parts[2]), float(parts[3]), float(parts[4])
+                    a, b, c = float(parts[5]), float(parts[6]), float(parts[7])
+                    d, e, f = float(parts[8]), float(parts[9]), float(parts[10])
+                    g, h, i = float(parts[11]), float(parts[12]), float(parts[13])
+                    subfile = parts[14]
 
-                        # Create transformation matrix for this subfile
-                        sub_transform = (a, b, c, d, e, f, g, h, i, x, y, z)
+                    # Create transformation matrix for this subfile
+                    sub_transform = (a, b, c, d, e, f, g, h, i, x, y, z)
 
-                        # Compose with current transformation
-                        composed_transform = compose_transforms(
-                            current_transform, sub_transform
-                        )
+                    # Compose with current transformation
+                    composed_transform = compose_transforms(
+                        current_transform, sub_transform
+                    )
 
-                        # Find subfile path
-                        subfile_path = ""
-                        for subdir in [False, "parts", "p"]:
-                            if subdir:
-                                search_path = ldraw_path + "/" + subdir
-                            else:
-                                search_path = ldraw_path
-                            subfile_path = os.path.join(search_path, subfile)
-                            subfile_path = subfile_path.replace("\\", "/")
-                            if not os.path.exists(subfile_path):
-                                # Try with .dat extension if not present
-                                if not subfile.lower().endswith(".dat"):
-                                    subfile_path = os.path.join(
-                                        search_path, subfile + ".dat"
-                                    )
+                    # Find subfile path
+                    subfile_path = ""
+                    for subdir in [False, "parts", "p"]:
+                        if subdir:
+                            search_path = ldraw_path + "/" + subdir
+                        else:
+                            search_path = ldraw_path
+                        subfile_path = os.path.join(search_path, subfile)
+                        subfile_path = subfile_path.replace("\\", "/")
+                        if not os.path.exists(subfile_path):
+                            # Try with .dat extension if not present
+                            if not subfile.lower().endswith(".dat"):
+                                subfile_path = os.path.join(
+                                    search_path, subfile + ".dat"
+                                )
 
-                            if not os.path.exists(subfile_path):
-                                # Try with uppercase .DAT extension
-                                subfile_path = subfile_path.replace(".DAT", ".dat")
+                        if not os.path.exists(subfile_path):
+                            # Try with uppercase .DAT extension
+                            subfile_path = subfile_path.replace(".DAT", ".dat")
 
-                            if not os.path.exists(subfile_path):
-                                # Try with all lowercase
-                                subfile_path = subfile_path.lower()
-
-                            if os.path.exists(subfile_path):
-                                break
+                        if not os.path.exists(subfile_path):
+                            # Try with all lowercase
+                            subfile_path = subfile_path.lower()
 
                         if os.path.exists(subfile_path):
-                            # Recursively parse subfile
-                            sub_triangles = parse_ldraw_file(subfile_path, composed_transform)
-                            triangles.extend(sub_triangles)
-                        else:
-                            print(
-                                f"Warning: Subfile {subfile} not found in {ldraw_path}",
-                                file=sys.stderr,
-                            )
-                    except (IndexError, ValueError):
-                        continue
+                            break
+
+                    if os.path.exists(subfile_path):
+                        # Recursively parse subfile
+                        sub_triangles = parse_ldraw_file(subfile_path, composed_transform)
+                        triangles.extend(sub_triangles)
+                    else:
+                        print(
+                            f"Warning: Subfile {subfile} not found in {ldraw_path}",
+                            file=sys.stderr,
+                        )
     except Exception as e:
         print(f"Error reading file {file_path}: {e}", file=sys.stderr)
         return []
