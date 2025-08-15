@@ -108,11 +108,9 @@ def parse_ldraw_file(file_path, current_transform=None):
 
                     # Find subfile path
                     subfile_path = ""
-                    for subdir in [False, "parts", "p"]:
-                        if subdir:
-                            search_path = ldraw_path + "/" + subdir
-                        else:
-                            search_path = ldraw_path
+                    for subdir in ["parts", "p"]:
+                        search_path = ldraw_path + "/" + subdir
+
                         subfile_path = os.path.join(search_path, subfile)
                         subfile_path = subfile_path.replace("\\", "/")
                         if not os.path.exists(subfile_path):
