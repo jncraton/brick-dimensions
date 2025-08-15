@@ -43,7 +43,7 @@ def parse_ldraw_file(file_path, current_transform=None):
     if current_transform is None:
         current_transform = (1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)  # Identity matrix
 
-    triangles = []
+    v = set()
 
     try:
         with open(file_path, "r", encoding="latin1") as f:
@@ -63,11 +63,9 @@ def parse_ldraw_file(file_path, current_transform=None):
                     x3, y3, z3 = float(parts[8]), float(parts[9]), float(parts[10])
 
                     # Apply current transformation
-                    v1 = apply_transform(current_transform, (x1, y1, z1))
-                    v2 = apply_transform(current_transform, (x2, y2, z2))
-                    v3 = apply_transform(current_transform, (x3, y3, z3))
-
-                    triangles.append((v1, v2, v3))
+                    v.add(apply_transform(current_transform, (x1, y1, z1)))
+                    v.add(apply_transform(current_transform, (x2, y2, z2)))
+                    v.add(apply_transform(current_transform, (x3, y3, z3)))
 
                 elif cmd_type == "4":
                     # Quad command: 4 <color> <x1> <y1> <z1> <x2> <y2> <z2> <x3> <y3> <z3> <x4> <y4> <z4>
@@ -81,13 +79,10 @@ def parse_ldraw_file(file_path, current_transform=None):
                     )
 
                     # Apply current transformation
-                    v1 = apply_transform(current_transform, (x1, y1, z1))
-                    v2 = apply_transform(current_transform, (x2, y2, z2))
-                    v3 = apply_transform(current_transform, (x3, y3, z3))
-                    v4 = apply_transform(current_transform, (x4, y4, z4))
-
-                    # Split quad into two triangles
-                    triangles.append((v1, v2, v3))
+                    v.add(apply_transform(current_transform, (x1, y1, z1)))
+                    v.add(apply_transform(current_transform, (x2, y2, z2)))
+                    v.add(apply_transform(current_transform, (x3, y3, z3)))
+                    v.add(apply_transform(current_transform, (x4, y4, z4)))
 
                 elif cmd_type == "1":
                     # Subfile command: 1 <color> <x> <y> <z> <a> <b> <c> <d> <e> <f> <g> <h> <i> <file>
@@ -120,8 +115,7 @@ def parse_ldraw_file(file_path, current_transform=None):
 
                     if os.path.exists(subfile_path):
                         # Recursively parse subfile
-                        sub_triangles = parse_ldraw_file(subfile_path, composed_transform)
-                        triangles.extend(sub_triangles)
+                        v |= parse_ldraw_file(subfile_path, composed_transform)
                     else:
                         print(
                             f"Warning: Subfile {subfile} not found in {ldraw_path}",
@@ -129,21 +123,20 @@ def parse_ldraw_file(file_path, current_transform=None):
                         )
     except Exception as e:
         print(f"Error reading file {file_path}: {e}", file=sys.stderr)
-        return []
+        return set()
 
-    return triangles
+    return v
 
 
-def compute_bounding_box(triangles):
+def compute_bounding_box(vertices):
     """Compute the axis-aligned bounding box of a list of triangles"""
-    if not triangles:
+    if not vertices:
         return (0, 0, 0, 0, 0, 0)
     xs, ys, zs = [], [], []
-    for tri in triangles:
-        for vertex in tri:
-            xs.append(vertex[0])
-            ys.append(vertex[1])
-            zs.append(vertex[2])
+    for vertex in vertices:
+        xs.append(vertex[0])
+        ys.append(vertex[1])
+        zs.append(vertex[2])
     min_x, max_x = min(xs), max(xs)
     min_y, max_y = min(ys), max(ys)
     min_z, max_z = min(zs), max(zs)
@@ -162,14 +155,14 @@ def get_bounding_box(part):
     file_path = f"{ldraw_path}/parts/{part}.dat"
 
     try:
-        triangles = parse_ldraw_file(file_path)
+        vertices = parse_ldraw_file(file_path)
     except Exception as e:
         print(f"Error reading file: {e}", file=sys.stderr)
 
-    if not triangles:
-        print(f"No triangles found in the LDraw file: {file_path}", file=sys.stderr)
+    if not vertices:
+        print(f"No vertices found in the LDraw file: {file_path}", file=sys.stderr)
 
-    return compute_bounding_box(triangles)
+    return compute_bounding_box(vertices)
 
 
 def get_dimensions(part):
