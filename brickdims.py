@@ -54,7 +54,24 @@ def get_commands(file_path):
 
     commands = []
 
-    with open(file_path, "r", encoding="latin1") as f:
+    # Find subfile path
+    subfile_path = ""
+    for subdir in ["..", "parts", "p"]:
+        search_path = ldraw_path + "/" + subdir
+
+        subfile_path = os.path.join(search_path, file_path)
+        subfile_path = subfile_path.replace("\\", "/")
+        subfile_path = subfile_path.lower()
+
+        if os.path.exists(subfile_path):
+            break
+    else:
+        print(
+            f"Warning: Subfile {file_path} not found in {ldraw_path}",
+            file=sys.stderr,
+        )
+
+    with open(subfile_path, "r", encoding="latin1") as f:
         for line in f:
             line = line.strip()
             if not line:
@@ -111,26 +128,7 @@ def parse_ldraw_file(file_path, current_transform=None):
                 # Compose with current transformation
                 composed_transform = compose_transforms(current_transform, sub_transform)
 
-                # Find subfile path
-                subfile_path = ""
-                for subdir in ["parts", "p"]:
-                    search_path = ldraw_path + "/" + subdir
-
-                    subfile_path = os.path.join(search_path, subfile)
-                    subfile_path = subfile_path.replace("\\", "/")
-                    subfile_path = subfile_path.lower()
-
-                    if os.path.exists(subfile_path):
-                        break
-
-                if os.path.exists(subfile_path):
-                    # Recursively parse subfile
-                    v |= parse_ldraw_file(subfile_path, composed_transform)
-                else:
-                    print(
-                        f"Warning: Subfile {subfile} not found in {ldraw_path}",
-                        file=sys.stderr,
-                    )
+                v |= parse_ldraw_file(subfile, composed_transform)
     except Exception as e:
         print(f"Error reading file {file_path}: {e}", file=sys.stderr)
         return set()
