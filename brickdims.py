@@ -193,6 +193,9 @@ def get_dimensions(part):
 
     >>> get_dimensions("6558") # doctest: +ELLIPSIS
     (0.6..., 2.4, 0.6...)
+
+    >>> get_dimensions("24326")
+    (3.2, 3.52, 0.8)
     """
 
     bounding_box_ldu = get_bounding_box(part)
