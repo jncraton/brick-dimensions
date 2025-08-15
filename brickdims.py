@@ -99,39 +99,35 @@ def parse_ldraw_file(file_path, current_transform=None):
 
     v = set()
 
-    try:
-        for parts in get_commands(file_path):
-            cmd_type = parts[0]
+    for parts in get_commands(file_path):
+        cmd_type = parts[0]
 
-            if cmd_type == "3":
-                # Triangle command: 3 <color> <x1> <y1> <z1> <x2> <y2> <z2> <x3> <y3> <z3>
-                # Apply current transformation
-                v.add(apply_transform(current_transform, parts[2:5]))
-                v.add(apply_transform(current_transform, parts[5:8]))
-                v.add(apply_transform(current_transform, parts[8:11]))
+        if cmd_type == "3":
+            # Triangle command: 3 <color> <x1> <y1> <z1> <x2> <y2> <z2> <x3> <y3> <z3>
+            # Apply current transformation
+            v.add(apply_transform(current_transform, parts[2:5]))
+            v.add(apply_transform(current_transform, parts[5:8]))
+            v.add(apply_transform(current_transform, parts[8:11]))
 
-            elif cmd_type == "4":
-                # Quad command: 4 <color> <x1> <y1> <z1> <x2> <y2> <z2> <x3> <y3> <z3> <x4> <y4> <z4>
-                # Apply current transformation
-                v.add(apply_transform(current_transform, parts[2:5]))
-                v.add(apply_transform(current_transform, parts[5:8]))
-                v.add(apply_transform(current_transform, parts[8:11]))
-                v.add(apply_transform(current_transform, parts[11:14]))
+        elif cmd_type == "4":
+            # Quad command: 4 <color> <x1> <y1> <z1> <x2> <y2> <z2> <x3> <y3> <z3> <x4> <y4> <z4>
+            # Apply current transformation
+            v.add(apply_transform(current_transform, parts[2:5]))
+            v.add(apply_transform(current_transform, parts[5:8]))
+            v.add(apply_transform(current_transform, parts[8:11]))
+            v.add(apply_transform(current_transform, parts[11:14]))
 
-            elif cmd_type == "1":
-                # Subfile command: 1 <color> <x> <y> <z> <a> <b> <c> <d> <e> <f> <g> <h> <i> <file>
-                subfile = parts[14]
+        elif cmd_type == "1":
+            # Subfile command: 1 <color> <x> <y> <z> <a> <b> <c> <d> <e> <f> <g> <h> <i> <file>
+            subfile = parts[14]
 
-                # Create transformation matrix for this subfile
-                sub_transform = parts[5:14] + parts[2:5]
+            # Create transformation matrix for this subfile
+            sub_transform = parts[5:14] + parts[2:5]
 
-                # Compose with current transformation
-                composed_transform = compose_transforms(current_transform, sub_transform)
+            # Compose with current transformation
+            composed_transform = compose_transforms(current_transform, sub_transform)
 
-                v |= parse_ldraw_file(subfile, composed_transform)
-    except Exception as e:
-        print(f"Error reading file {file_path}: {e}", file=sys.stderr)
-        return set()
+            v |= parse_ldraw_file(subfile, composed_transform)
 
     return v
 
@@ -162,10 +158,7 @@ def get_bounding_box(part):
     """
     file_path = f"{ldraw_path}/parts/{part}.dat"
 
-    try:
-        vertices = parse_ldraw_file(file_path)
-    except Exception as e:
-        print(f"Error reading file: {e}", file=sys.stderr)
+    vertices = parse_ldraw_file(file_path)
 
     if not vertices:
         print(f"No vertices found in the LDraw file: {file_path}", file=sys.stderr)
